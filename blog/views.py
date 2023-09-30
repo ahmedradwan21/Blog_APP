@@ -33,10 +33,14 @@ def user_is_viewer(user):
 
 @login_required
 def blog_post_list(request):
-    posts = BlogPost.objects.filter(author=request.user).order_by('-pub_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
-
-
+    query = request.GET.get('q')
+    posts = BlogPost.objects.filter(author=request.user)
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        )
+    posts = posts.order_by('-pub_date')
+    return render(request, 'blog/post_list.html', {'posts': posts, 'query': query})
 
 def register(request):
     if request.method == 'POST':
@@ -78,24 +82,24 @@ def not_allowed(request):
     return render(request, 'blog/not_allowed.html')
 
 @login_required
-# @user_passes_test(user_is_member, login_url='blog_post_list')
 @user_passes_test(user_is_member, login_url='not_allowed')
 def create_blog_post(request):
-    if not user_is_member(request.user):
-        return HttpResponse("You don't have permission to create a blog post.")
-    
     if request.method == 'POST':
         title = request.POST['title']
         content = request.POST['content']
         author = request.user
         publish_status = request.POST.get('publish_status')
+        is_draft = request.POST.get('is_draft')
         
         if publish_status == 'publish':
             post = BlogPost(title=title, content=content, author=author, publish_status='published')
+            return redirect('publish_blog_posts') 
+        else:
+            post = BlogPost(title=title, content=content, author=author, publish_status='draft')
             post.save()
-            return redirect('publish_blog_posts')  
-            
         return redirect('blog_post_list')  
+        
+            
     
         
     return render(request, 'blog/create_post.html')

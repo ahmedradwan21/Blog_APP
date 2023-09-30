@@ -1,87 +1,173 @@
 {% extends 'blog/main.html' %}
 
 {% block content %}
-<div class="container">
-    <p class="greeting">Hi {{ user.username }}!</p>
-    <a href="{% url 'publish_blog_posts' %}">publish</a>
-    <a href="{% url 'create_blog_post' %}" class="btn btn-primary">New Post</a>
-    <a href="{% url 'password_change' %}" class='btn btn-primary'>Change Password</a>
-    <ul>
-        {% if request.user.is_authenticated %}
-        <button class="logout-button">
-            <a href="{% url 'logout' %}">logout</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Blog Page</title>
+    <style>
+        /* Custom CSS Styles */
+
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        /* Header Styles */
+        .greeting {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            margin-top: 10px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            margin-right: 10px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #007bff;
+        }
+
+        .nav-links a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Search Form Styles */
+        .search-form {
+            margin-top: 20px;
+        }
+
+        .search-form input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-form button[type="submit"] {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .search-form button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Post List Styles */
+        .post-list-header {
+            font-size: 24px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .post-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .post-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 3px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-title {
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .post-author {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .post-date {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .empty-post {
+            font-size: 14px;
+            color: #777;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Content -->
+    <div class="container">
+        <p class="greeting">Hi {{ user.username }}!</p>
+        <div class="nav-links">
+            <a href="{% url 'publish_blog_posts' %}">Publish</a>
+            <a href="{% url 'create_blog_post' %}">New Post</a>
+            <a href="{% url 'password_change' %}" class='btn btn-primary'>Change Password</a>
+        </div>
+        <form method="get" class="search-form">
+            <input type="text" name="q" placeholder="Search posts..." {% if query %}value="{{ query }}"{% endif %}>
+            <button type="submit" class="search-button">Search</button>
+
+        </form>
+            
+        <div class="nav-links">
+        <ul>
+            {% if request.user.is_authenticated %}
+            <button class="logout-button">
+                <a href="{% url 'logout' %}">Logout</a>
+            </button>
             {% else %}
-        <button class="logout-button">
-        <a href="{% url 'login' %}">LOGIN</a>
-        {% endif %}
-    </ul>
+            <button class="logout-button">
+                <a href="{% url 'login' %}">Login</a>
+            </button>
+            {% endif %}
+        </ul>
+    </div>
 
-    <h2 class="post-list-header">All Posts</h2>
-    <ul class="post-list">
-        {% for post in posts %}
-        <li class="post-item">
-            <h1 class="post-title"><a href="{% url 'view_blog_post' post.id %}">{{ post.title }}</a></h1>
-            <p class="post-author">Created By: {{ post.author }}</p>
-            <p class="post-date">Created At: {{ post.pub_date }}</p>
-        </li>
-        {% empty %}
-        <li class="empty-post">No blog posts available.</li>
-        {% endfor %}
-    
-    </ul>
-
-    
-</div>
-<style>
-    .greeting {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-
-    .btn-primary {
-        margin-bottom: 20px;
-    }
-
-    .post-list-header {
-        font-size: 24px;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-
-    .post-list {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .post-item {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 3px;
-    }
-
-    .post-title {
-        font-size: 20px;
-        margin-top: 0;
-        margin-bottom: 5px;
-    }
-
-    .post-author {
-        font-size: 14px;
-        color: #777;
-        margin-bottom: 5px;
-    }
-
-    .post-date {
-        font-size: 14px;
-        color: #777;
-    }
-
-    .empty-post {
-        font-size: 14px;
-        color: #777;
-        margin-top: 20px;
-    }
-</style>
-
+        <h2 class="post-list-header">All Posts</h2>
+        <ul class="post-list">
+            {% for post in posts %}
+            <li class="post-item">
+                <h1 class="post-title"><a href="{% url 'view_blog_post' post.id %}">{{ post.title }}</a></h1>
+                <p class="post-author">Created By: {{ post.author }}</p>
+                <p class="post-date">Created At: {{ post.pub_date }}</p>
+            </li>
+            {% empty %}
+            <li class="empty-post">No blog posts available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
 {% endblock %}

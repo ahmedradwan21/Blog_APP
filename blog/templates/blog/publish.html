@@ -2,17 +2,67 @@
 
 {% block content %}
 <style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
     .page-title {
         font-size: 24px;
         text-align: center;
         margin-bottom: 20px;
     }
-
+    
+    .search-form {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .search-input {
+        width: 70%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .search-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+    }
+    
+    .logout-button,
+    .login-button {
+        margin-top: 10px;
+    }
+    
+    .logout-link,
+    .login-link {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    
     .post-list {
         list-style-type: none;
         padding: 0;
     }
-
+    
     .post-item {
         background-color: #f5f5f5;
         margin-bottom: 20px;
@@ -20,43 +70,58 @@
         border: 1px solid #ddd;
         border-radius: 5px;
     }
-
+    
     .post-title {
         font-size: 20px;
         margin-bottom: 5px;
     }
-
+    
     .post-author {
         color: #777;
         font-style: italic;
     }
-
+    
+    .post-date {
+        color: #777;
+    }
+    
     .empty-list {
         text-align: center;
+        color: #777;
+        font-style: italic;
     }
+    
+    .cancel-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        text-decoration: none;
+        color: #007bff;
+    }
+    
 </style>
-
-
 <div class="container">
     <h2 class="page-title">All Published Posts</h2>
     <form method="get" class="search-form">
-        <input type="text" name="q" placeholder="Search posts..." value="{{ query }}">
-        <button type="submit">Search</button>
+        <input type="text" name="q" placeholder="Search posts..." value="{{ query }}" class="search-input">
+        <button type="submit" class="search-button">Search</button>
     </form>
     <ul>
         {% if request.user.is_authenticated %}
         <p>{{ request.user }}</p>
         <button class="logout-button">
-            <a href="{% url 'logout' %}">logout</a>
-            {% else %}
-        <button class="logout-button">
-        <a href="{% url 'login' %}">LOGIN</a>
+            <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+        </button>
+        {% else %}
+        <button class="login-button">
+            <a href="{% url 'login' %}" class="login-link">Login</a>
+        </button>
         {% endif %}
     </ul>
     <ul class="post-list">
         {% for post in posts %}
         <li class="post-item">
-            <h1 class="post-title"><a href="{% url 'view_blog_post' post.id %}">{{ post.title }}</a></h1>
+            <h1 class="post-title"><a href="{% url 'view_blog_post' post.id %}" class="post-link">{{ post.title }}</a></h1>
             <p class="post-author">Created By: {{ post.author }}</p>
             <p class="post-date">Created At: {{ post.pub_date }}</p>
         </li>
@@ -66,7 +131,8 @@
         </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'blog_post_list' %}">Cancel</a>
+    <a href="{% url 'blog_post_list' %}" class="cancel-link">Cancel</a>
 </div>
+
 
 {% endblock %}
