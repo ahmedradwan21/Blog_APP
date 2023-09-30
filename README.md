@@ -4,6 +4,7 @@ This Markdown document provides an in-depth explanation of a Django web applicat
 
 ## Table of Contents
 
+- [What This App Provides for Any User](#what-this-app-provides-for-any-user)
 - [Authentication and Permissions](#authentication-and-permissions)
 - [Views](#views)
 - [Models](#models)
@@ -11,7 +12,6 @@ This Markdown document provides an in-depth explanation of a Django web applicat
 - [Messages](#messages)
 - [Password Change](#password-change)
 - [URL Routing](#url-routing)
-- [What This App Provides for Any User](#what-this-app-provides-for-any-user)
 
 
 ## What This App Provides for Any User <a name="what-this-app-provides-for-any-user"></a>
