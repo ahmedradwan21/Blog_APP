@@ -1,0 +1,88 @@
+{% extends 'blog/main.html' %}
+
+{% block content %}
+<div class="container">
+    <p class="greeting">Hi {{ user.username }}!</p>
+    <a href="{% url 'publish_blog_posts' %}">publish</a>
+    <a href="{% url 'create_blog_post' %}" class="btn btn-primary">New Post</a>
+    <a href="{% url 'create_blog_post' %}" class="btn btn-primary">New Post</a>
+    <a href="{% url 'password_change' %}" class='btn btn-primary'>Change Password</a>
+    <ul>
+        {% if request.user.is_authenticated %}
+        <button class="logout-button">
+            <a href="{% url 'logout' %}">logout</a>
+            {% else %}
+        <button class="logout-button">
+        <a href="{% url 'login' %}">LOGIN</a>
+        {% endif %}
+    </ul>
+
+    <h2 class="post-list-header">All Posts</h2>
+    <ul class="post-list">
+        {% for post in posts %}
+        <li class="post-item">
+            <h1 class="post-title"><a href="{% url 'view_blog_post' post.id %}">{{ post.title }}</a></h1>
+            <p class="post-author">Created By: {{ post.author }}</p>
+            <p class="post-date">Created At: {{ post.pub_date }}</p>
+        </li>
+        {% empty %}
+        <li class="empty-post">No blog posts available.</li>
+        {% endfor %}
+    
+    </ul>
+
+    
+</div>
+<style>
+    .greeting {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        margin-bottom: 20px;
+    }
+
+    .post-list-header {
+        font-size: 24px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .post-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .post-item {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 3px;
+    }
+
+    .post-title {
+        font-size: 20px;
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+
+    .post-author {
+        font-size: 14px;
+        color: #777;
+        margin-bottom: 5px;
+    }
+
+    .post-date {
+        font-size: 14px;
+        color: #777;
+    }
+
+    .empty-post {
+        font-size: 14px;
+        color: #777;
+        margin-top: 20px;
+    }
+</style>
+
+{% endblock %}

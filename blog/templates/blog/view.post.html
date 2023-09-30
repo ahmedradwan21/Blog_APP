@@ -1,0 +1,106 @@
+{% extends 'blog/main.html' %}
+
+{% block content %}
+<div class="container">
+    <p class="greeting">Welcome {{ user.username }}!</p>
+    <h2 class="post-title">{{ post.title }}</h2>
+    <p class="post-content">{{ post.content }}</p>
+    
+    <h3 class="comment-header">Comments</h3>
+    {% if user == post.author %}
+    <a href="{% url 'delete_blog_post' post.id %}" class="btn btn-danger">Delete</a>
+    <a href="{% url 'update_blog_post' post.id %}" class="btn btn-primary">Edit</a>
+    {% endif %}
+    <ul class="comment-list">
+        {% for comment in comments %}
+        <li class="comment-item">{{ comment.text }} - {{ comment.author.username }}</li>
+        {% empty %}
+        <li class="empty-comment">No comments available.</li>
+        {% endfor %}
+    </ul>
+
+
+    <ul>
+        {% if request.user.is_authenticated %}
+        <p>{{ request.user }}</p>
+        <button class="logout-button">
+            <a href="{% url 'logout' %}">logout</a>
+            {% else %}
+        <button class="logout-button">
+        <a href="{% url 'login' %}">LOGIN</a>
+        {% endif %}
+    </ul>
+
+
+
+    <h3 class="add-comment-header">Add a Comment</h3>
+    <form method="post" action="{% url 'add_comment' post.id %}" class="comment-form">
+        {% csrf_token %}
+        <textarea name="comment_text" rows="4" cols="50" class="comment-textarea"></textarea>
+        <br>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+    <p class="back-link"><a href="{% url 'blog_post_list' %}" class="btn btn-secondary">Back to Blog Posts</a></p>
+</div>
+<style>
+    .greeting {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .post-title {
+        font-size: 24px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .post-content {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .comment-header {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .comment-list {
+        list-style-type: none;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    .comment-item {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .empty-comment {
+        font-size: 14px;
+        color: #777;
+    }
+
+    .add-comment-header {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .comment-form {
+        max-width: 400px;
+    }
+
+    .comment-textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    /* Define your styles here */
+</style>
+{% endblock %}

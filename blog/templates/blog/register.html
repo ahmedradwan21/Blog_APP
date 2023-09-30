@@ -1,0 +1,74 @@
+{% extends 'blog/main.html' %}
+
+{% block content %}
+<style>
+  .page-title {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+  }
+
+  .registration-form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .registration-form label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+  }
+
+  .registration-form input[type="text"],
+  .registration-form input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+  }
+
+  .registration-form .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+  }
+
+  .cancel-link {
+      text-align: center;
+      margin-top: 10px;
+  }
+
+  .cancel-link a {
+      color: #007bff;
+      text-decoration: none;
+  }
+</style>
+
+<div class="container">
+    <h2 class="page-title">Register</h2>
+    <form method="post" class="registration-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="id_groups">Select Permission Level:</label>
+        <select id="id_groups" name="groups">
+            <option value="Viewer">Viewer</option>
+            <option value="Member">Member</option>
+            <option value="admin">Admin</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <p class="cancel-link"><a href="{% url 'login' %}">LOGIN</a></p>
+    <p class="cancel-link"><a href="{% url 'blog_post_list' %}">Cancel</a></p>
+</div>
+{% endblock %}

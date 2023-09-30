@@ -1,0 +1,17 @@
+{% extends 'blog/main.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Delete Blog Post</h2>
+    <p>Are you sure you want to delete the following blog post?</p>
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.content }}</p>
+
+    <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    </form>
+
+    <a href="{% url 'blog_post_list' %}" class="btn btn-secondary">Cancel</a>
+</div>
+{% endblock %}

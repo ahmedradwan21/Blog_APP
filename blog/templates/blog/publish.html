@@ -1,0 +1,72 @@
+{% extends 'blog/main.html' %}
+
+{% block content %}
+<style>
+    .page-title {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .post-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .post-item {
+        background-color: #f5f5f5;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .post-title {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .post-author {
+        color: #777;
+        font-style: italic;
+    }
+
+    .empty-list {
+        text-align: center;
+    }
+</style>
+
+
+<div class="container">
+    <h2 class="page-title">All Published Posts</h2>
+    <form method="get" class="search-form">
+        <input type="text" name="q" placeholder="Search posts..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+    <ul>
+        {% if request.user.is_authenticated %}
+        <p>{{ request.user }}</p>
+        <button class="logout-button">
+            <a href="{% url 'logout' %}">logout</a>
+            {% else %}
+        <button class="logout-button">
+        <a href="{% url 'login' %}">LOGIN</a>
+        {% endif %}
+    </ul>
+    <ul class="post-list">
+        {% for post in posts %}
+        <li class="post-item">
+            <h1 class="post-title"><a href="{% url 'view_blog_post' post.id %}">{{ post.title }}</a></h1>
+            <p class="post-author">Created By: {{ post.author }}</p>
+            <p class="post-date">Created At: {{ post.pub_date }}</p>
+        </li>
+        {% empty %}
+        <li class="empty-list">
+            <p>No posts available.</p>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'blog_post_list' %}">Cancel</a>
+</div>
+
+{% endblock %}
