@@ -107,6 +107,7 @@ def view_blog_post(request, post_id):
     return render(request, 'blog/view.post.html', {'post': post, 'comments': comments})
 
 @login_required
+@user_passes_test(user_is_member, login_url='not_allowed')
 def add_comment(request, post_id):
     post = BlogPost.objects.get(pk=post_id)
     if request.method == 'POST':
@@ -133,6 +134,7 @@ def publish_blog_post(request):
 
 
 @login_required
+@user_passes_test(user_is_member, login_url='not_allowed')
 def delete_blog_post(request, post_id):
     post = get_object_or_404(BlogPost, pk=post_id)
     if request.method == 'POST':
@@ -143,6 +145,7 @@ def delete_blog_post(request, post_id):
 
 
 @login_required
+@user_passes_test(user_is_member, login_url='not_allowed')
 def update_blog_post(request, post_id):
     post = get_object_or_404(BlogPost, pk=post_id)
 

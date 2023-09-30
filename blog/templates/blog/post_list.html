@@ -5,7 +5,6 @@
     <p class="greeting">Hi {{ user.username }}!</p>
     <a href="{% url 'publish_blog_posts' %}">publish</a>
     <a href="{% url 'create_blog_post' %}" class="btn btn-primary">New Post</a>
-    <a href="{% url 'create_blog_post' %}" class="btn btn-primary">New Post</a>
     <a href="{% url 'password_change' %}" class='btn btn-primary'>Change Password</a>
     <ul>
         {% if request.user.is_authenticated %}
