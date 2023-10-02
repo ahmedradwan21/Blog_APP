@@ -76,7 +76,7 @@ def user_login(request):
         form = AuthenticationForm()
     return render(request, 'blog/login.html', {'form': form})
 
-from django.contrib import messages
+# from django.contrib import messages
 
 def not_allowed(request):
     return render(request, 'blog/not_allowed.html')

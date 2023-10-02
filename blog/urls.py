@@ -19,7 +19,7 @@ urlpatterns = [
     path('change-password/', PasswordChangeView.as_view(), name='password_change'),
         path('change-password/', auth_views.PasswordChangeView.as_view(
         template_name='change_password.html',
-        success_url='/password-change-done/'  # Define your custom success URL here
+        success_url='/password-change-done/'  
     ), name='password_change'),
     path('password-change-done/', auth_views.PasswordChangeDoneView.as_view(
         template_name='password_change_done.html'
