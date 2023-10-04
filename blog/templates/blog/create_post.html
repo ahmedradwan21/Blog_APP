@@ -62,31 +62,11 @@
             margin-top: 10px;
         }
     </style>
+    <h2>Create Blog Post</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
 
-    <div class="container">
-        <p class="greeting">Hi {{ user.username }}!</p>
-        <h2>Create a New Blog Post</h2>
-        <form method="post" action="{% url 'create_blog_post' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" name="title" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="content">Content:</label>
-                <textarea name="content" rows="8" cols="50" class="form-control" required></textarea>
-            </div>
-            <div class="form-check">
-                <input type="radio" class="form-check-input" name="publish_status" id="publish" value="publish">
-                <label class="form-check-label" for="publish">Publish</label>
-            </div>
-            <div class="form-check">
-                <input type="radio" class="form-check-input" name="publish_status" id="draft" value="draft">
-                <label class="form-check-label" for="draft">Draft</label>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <a href="{% url 'blog_post_list' %}" class="btn btn-secondary">Back to Blog Posts</a>
-    </div>
+      <button type="submit">Save</button>
+    </form>
 {% endblock %}

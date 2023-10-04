@@ -7,6 +7,12 @@ class UserProfile(models.Model):
     auth_level = models.CharField(max_length=10, choices=[('viewer', 'Viewer'), ('writer', 'Writer'), ('admin', 'Admin')])
     groups = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+
+
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
@@ -14,6 +20,11 @@ class BlogPost(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     is_draft = models.BooleanField(default=True)
     publish_status = models.CharField(max_length=10, choices=[('draft', 'Draft'), ('published', 'Published')], default='draft')
+    categories = models.ManyToManyField(Category)
+    published = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
     post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)

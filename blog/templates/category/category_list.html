@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Page Title</title>
+    <style>
+        /* Custom CSS styles for the container */
+        .container {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+
+        /* Custom CSS styles for the "Category" link */
+        .category-link {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        /* Custom CSS styles for the "Create" button */
+        .create-button {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+        }
+
+        /* Custom CSS styles for the "Create" button on hover */
+        .create-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Custom CSS styles for the "Categories with Posts" heading */
+        .categories-heading {
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* Custom CSS styles for list items */
+        .list-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+
+        /* Custom CSS styles for the "Cancel" button */
+        .cancel-button {
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: none;
+        }
+
+        /* Custom CSS styles for the "Cancel" button on hover */
+        .cancel-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'category_list1' %}" class="category-link">Edite</a>
+        <h2>Categories</h2>
+        <a href="{% url 'category_create' %}" class="create-button">Create</a>
+        <ul class="list-group">
+            <h1 class="categories-heading">Categories with Posts</h1>
+            {% for category in categories %}
+            <li class="list-item">
+                <a href="{% url 'category_post_list' category.id %}">{{ category.name }}</a>
+            </li>
+            {% empty %}
+            <li class="list-item">No categories found.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'blog_post_list' %}" class="cancel-link">Cancel</a>
+
+    </div>
+</body>
+</html>

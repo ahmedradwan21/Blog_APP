@@ -1,6 +1,12 @@
 {% extends 'blog/main.html' %}
 
 {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Blog Page</title>
 <style>
     .container {
         max-width: 800px;
@@ -98,14 +104,64 @@
         text-decoration: none;
         color: #007bff;
     }
+    .category {
+        display: none; /* Initially hide the category */
+    }
+
+    .category a {
+        display: inline-block;
+        padding: 14px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #060606;
+        transition: 0.3s;
+        margin: 0px;
+        position: initial;
+    }
+
+
+    .category h1 {
+        font-size: 24px;
+        color: #fff;
+    }
+
+    /* Toggle Button Styles */
+    .toggle-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+    .toggle-button:hover {
+        background-color: #0056b3;
+    }
     
 </style>
+</head>
+<body>
 <div class="container">
     <h2 class="page-title">All Published Posts</h2>
     <form method="get" class="search-form">
         <input type="text" name="q" placeholder="Search posts..." value="{{ query }}" class="search-input">
         <button type="submit" class="search-button">Search</button>
     </form>
+    <button class="toggle-button" onclick="toggleCategories()">Show Categories</button>
+    <div class="category" id="category">
+        {% comment %} <h1>Categories</h1> {% endcomment %}
+        {% for category in categories %}
+        <a href="{% url 'category_post_list' category.id %}">{{ category.name }}</a>
+        {% empty %}
+        <p>No categories found.</p>
+        {% endfor %}
+    </div>
+    
+
+    <div>
+        
     <ul>
         {% if request.user.is_authenticated %}
         <p>{{ request.user }}</p>
@@ -118,6 +174,8 @@
         </button>
         {% endif %}
     </ul>
+</div>
+<div>
     <ul class="post-list">
         {% for post in posts %}
         <li class="post-item">
@@ -132,7 +190,23 @@
         {% endfor %}
     </ul>
     <a href="{% url 'blog_post_list' %}" class="cancel-link">Cancel</a>
-</div>
+<div>
+<script>
+    let categoriesVisible = false;
+
+    function toggleCategories() {
+        const category = document.getElementById("category");
+        if (!categoriesVisible) {
+            category.style.display = "block"; // Show the categories
+        } else {
+            category.style.display = "none"; // Hide the categories
+        }
+        categoriesVisible = !categoriesVisible;
+    }
+</script>
 
 
+</body>
+</html>
 {% endblock %}
+

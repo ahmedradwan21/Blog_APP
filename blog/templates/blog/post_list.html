@@ -118,6 +118,41 @@
             color: #777;
             margin-top: 20px;
         }
+        .category {
+            display: none; /* Initially hide the category */
+        }
+    
+        .category a {
+            display: inline-block;
+            padding: 14px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #060606;
+            transition: 0.3s;
+            margin: 0px;
+            position: initial;
+        }
+    
+    
+        .category h1 {
+            font-size: 24px;
+            color: #fff;
+        }
+    
+        /* Toggle Button Styles */
+        .toggle-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+    
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -125,17 +160,26 @@
     <div class="container">
         <p class="greeting">Hi {{ user.username }}!</p>
         <div class="nav-links">
+                        {% comment %} <a href="{% url 'category_list1' %}">Categories</a> {% endcomment %}
+                        <a href="{% url 'category_list' %}">Categories</a>
+                        <a href="{% url 'publish_blog_posts' %}">Publish</a>
+                        <a href="{% url 'create_blog_post' %}">New Post</a>
+                        <a href="{% url 'logout' %}">Logout</a>
+                        <a href="{% url 'password_change' %}" class='btn btn-primary'>Change Password</a>
+            {% comment %} <a href="{% url 'category_list' %}">Categories</a>
             <a href="{% url 'publish_blog_posts' %}">Publish</a>
-            <a href="{% url 'create_blog_post' %}">New Post</a>
-            <a href="{% url 'password_change' %}" class='btn btn-primary'>Change Password</a>
+            <a href="{% url 'category_list' %}">categories</a>
+            <a href="{% url 'password_change' %}" class='btn btn-primary'>Change Password</a> {% endcomment %}
         </div>
+        
         <form method="get" class="search-form">
             <input type="text" name="q" placeholder="Search posts..." {% if query %}value="{{ query }}"{% endif %}>
             <button type="submit" class="search-button">Search</button>
 
         </form>
             
-        <div class="nav-links">
+        
+        {% comment %} <div class="nav-links">
         <ul>
             {% if request.user.is_authenticated %}
             <button class="logout-button">
@@ -147,9 +191,22 @@
             </button>
             {% endif %}
         </ul>
+    </div> {% endcomment %}
+    
+    <button class="toggle-button" onclick="toggleCategories()">Show Categories</button>
+    <div class="category" id="category">
+        {% comment %} <h1>Categories</h1> {% endcomment %}
+        {% for category in categories %}
+        <a href="{% url 'category_post_list' category.id %}">{{ category.name }}</a>
+        {% empty %}
+        <p>No categories found.</p>
+        {% endfor %}
     </div>
+    
+
 
         <h2 class="post-list-header">All Posts</h2>
+
         <ul class="post-list">
             {% for post in posts %}
             <li class="post-item">
@@ -162,6 +219,20 @@
             {% endfor %}
         </ul>
     </div>
+
+    <script>
+        let categoriesVisible = false;
+
+        function toggleCategories() {
+            const category = document.getElementById("category");
+            if (!categoriesVisible) {
+                category.style.display = "block"; // Show the categories
+            } else {
+                category.style.display = "none"; // Hide the categories
+            }
+            categoriesVisible = !categoriesVisible;
+        }
+    </script>
 </body>
 </html>
 {% endblock %}

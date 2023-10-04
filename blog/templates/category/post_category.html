@@ -1,0 +1,97 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    <title>Create Blog</title>
+    <style>
+        /* Add your custom CSS styles here */
+        .container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .no-posts {
+            font-size: 18px;
+            color: #777;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        /* Custom styling for the cancel button */
+        .btn-cancel {
+            background-color: #d9534f;
+            border-color: #d9534f;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .btn-cancel:hover {
+            background-color: #c9302c;
+            border-color: #ac2925;
+        }
+    </style>
+</head>
+<body>
+		{% comment %} {% include "Blog/blogNavBar.html" %} {% endcomment %}
+    <div class="container">
+        <h1>Posts in {{ category.name }}</h1>
+
+        {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li><a href="{% url 'view_blog_post' post.id %}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts found in this category.</p>
+    {% endif %}
+            
+        <a href="{% url 'blog_post_list' %}" class="cancel-link">Cancel</a>
+
+        <a href="{% url 'create_blog_post' %}">Create New Post</a>
+
+        
+    </div>
+</body>
+</html>

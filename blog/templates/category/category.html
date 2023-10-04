@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Page Title</title>
+<style>
+    .list-group {
+        margin-top: 20px;
+    }
+
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .list-group-item a {
+        text-decoration: none;
+    }
+
+    .list-group-item .btn {
+        margin-right: 5px;
+    }
+
+    .list-group-item .btn-warning {
+        background-color: #ffc107;
+        color: #333;
+    }
+
+    .list-group-item .btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .list-group-item strong {
+        flex: 1;
+    }
+
+    .list-group-item:empty {
+        font-size: 14px;
+        color: #777;
+    }
+</style>
+</head>
+<body>
+<ul class="list-group">
+    {% for category in categories %}
+    <li class="list-group-item">
+        <a href="{% url 'category_edit' category.id %}" class="btn btn-warning btn-sm float-right ml-2">Edit</a>
+        <a href="{% url 'category_delete' category.id %}" class="btn btn-danger btn-sm float-right">Delete</a>
+        <strong>{{ category.name }}</strong>
+    </li>
+    {% empty %}
+    <li class="list-group-item">No categories found.</li>
+    {% endfor %}
+    <a href="{% url 'category_list' %}"class = "btn btn-danger btn-sm float-right">Back to Categories</a>
+</ul>
+</body>
+</html>
